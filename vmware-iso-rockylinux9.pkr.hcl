@@ -71,7 +71,7 @@ source "vmware-iso" "rockylinux9" {
   disk_size         = 30720
   disk_adapter_type = "scsi"
   disk_type_id      = "1"
-  network           = "vmnet8"
+  network           = "nat"
   sound             = false
   usb               = false
 
