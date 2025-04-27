@@ -29,7 +29,7 @@ variable "checksum" {
 variable "headless" {
   type        = bool
   description = "When this value is set to true, the machine will start without a console"
-  default     = true
+  default     = false
 }
 
 variable "name" {
@@ -47,7 +47,7 @@ variable "username" {
 variable "password" {
   type        = string
   description = "A plaintext password to authenticate with SSH"
-  default     = "MotDePasse"
+  default     = "Packer2025"
 }
 
 source "vmware-iso" "rockylinux9" {
@@ -65,15 +65,13 @@ source "vmware-iso" "rockylinux9" {
   vmdk_name         = var.name
   version           = "21"
   guest_os_type     = "rockylinux-64"
-  cpus              = 1
-  vmx_data = {
-    "numvcpus" = "2"
-  }
+  cpus              = 2
+  cores             = 1
   memory            = 2048
   disk_size         = 30720
   disk_adapter_type = "scsi"
   disk_type_id      = "1"
-  network           = "nat"
+  network           = "vmnet8"
   sound             = false
   usb               = false
 
@@ -83,11 +81,10 @@ source "vmware-iso" "rockylinux9" {
   // Shutdown configuration
   shutdown_command = "systemctl poweroff"
 
-  // Http directory configuration
-  http_directory = "http"
-
   // Boot configuration
-  boot_command = ["<up><wait><tab> inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter>"]
+  cd_files = ["./http/ks.cfg"]
+  cd_label = "supportfiles"
+  boot_command = ["<up><up><tab> inst.text inst.ks=cdrom:/ks.cfg <enter><wait>"]
   boot_wait    = "10s"
 
   // Communicator configuration
