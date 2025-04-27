@@ -82,7 +82,7 @@ source "vmware-iso" "rockylinux9" {
   shutdown_command = "systemctl poweroff"
 
   // Boot configuration
-  cd_files = ["./http/ks.cfg"]
+  cd_files = ["./boot/ks.cfg"]
   cd_label = "supportfiles"
   boot_command = ["<up><up><tab> inst.text inst.ks=cdrom:/ks.cfg <enter><wait>"]
   boot_wait    = "10s"
